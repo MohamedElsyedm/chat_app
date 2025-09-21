@@ -1,0 +1,33 @@
+flutter_native_splash:
+
+  color: "#ffffff"
+  # background_image: "assets/images/whatsapp_icon.png"
+
+
+
+ 
+  image: assets/images/whatsapp_icon.png
+
+
+  branding: assets/images/branding_mo.png
+  image_dark: assets/images/whatsapp_icon.png
+
+  #branding_mode: bottom
+  
+
+  branding_bottom_padding: 24
+
+  color_dark: "#000000"
+  # background_image_dark: "assets/images/whatsapp_icon.png"
+  # image_dark: assets/images/whatsapp_icon.png
+  #branding_dark: assets/dart_dark.png
+
+
+  android_12:
+    color: "#ffffff"
+  #background_image: "assets/background.png"
+    image: assets/images/android12splash_w.png
+    branding: assets/images/branding_mo.png
+    branding_bottom_padding: 24
+    color_dark: "#000000"
+    image_dark: assets/images/android12splash_w_dark.png
