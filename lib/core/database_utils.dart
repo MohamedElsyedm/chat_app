@@ -1,3 +1,4 @@
+import 'package:chat_app/rooms/data/models/room_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:chat_app/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,9 +13,18 @@ class DatabaseUtils {
         toFirestore: (user, _) => user.toJson(),
       );
 
+  static CollectionReference<RoomModel> getRoomCollection() => FirebaseFirestore
+      .instance
+      .collection('rooms')
+      .withConverter<RoomModel>(
+        fromFirestore: (docSnapshot, _) =>
+            RoomModel.fromJson(docSnapshot.data()!),
+        toFirestore: (room, _) => room.toJson(),
+      );
+
   //firebase auth
 
-  final _auth = FirebaseAuth.instance;
+  // final _auth = FirebaseAuth.instance;
   /*
   final _googleSignIn = GoogleSignIn();
 
@@ -104,5 +114,20 @@ class DatabaseUtils {
     return userDoc.update({
       'favoriteEventIds': FieldValue.arrayRemove([eventId]),
     });
+  }
+
+  //
+
+  static Future<List<RoomModel>> getRoom() async {
+    final roomsCollection = getRoomCollection();
+    final querySnapshot = await roomsCollection.get();
+    return querySnapshot.docs.map((docSnapshot) => docSnapshot.data()).toList();
+  }
+
+  static Future<void> createRoom(RoomModel room) async {
+    final roomsCollection = getRoomCollection();
+    final doc = roomsCollection.doc();
+    room.id = doc.id;
+    return doc.set(room);
   }
 }

@@ -2,12 +2,13 @@ import 'package:chat_app/core/app_theme.dart';
 import 'package:chat_app/auth/presentation/screens/login_screen.dart';
 import 'package:chat_app/auth/presentation/screens/register_screen.dart';
 import 'package:chat_app/auth/view_model/auth_view_model.dart';
+import 'package:chat_app/core/bloc_observer.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/home_screen.dart';
 import 'package:chat_app/l10n/app_localizations.dart';
 import 'package:chat_app/core/languages/view_model/language_state.dart';
 import 'package:chat_app/core/languages/view_model/languages_view_model.dart';
-import 'package:chat_app/rooms/view/screens/room_screen.dart';
+import 'package:chat_app/rooms/view/screens/create_room_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,8 +20,8 @@ void main() async {
     SystemUiMode.immersiveSticky,
     overlays: [],
   );
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Bloc.observer = MyBlocObserver();
   runApp(
     MultiBlocProvider(
       providers: [
@@ -34,7 +35,6 @@ void main() async {
 
 class ChatApp extends StatelessWidget {
   const ChatApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LanguagesViewModel, LanguageState>(

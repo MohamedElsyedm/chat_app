@@ -9,6 +9,7 @@ class DefaultTextFormField extends StatefulWidget {
   final String? prefixIconImageName;
   final String? Function(String?)? validator;
   final bool isPassword;
+  final int? maxLines;
 
   const DefaultTextFormField({
     super.key,
@@ -18,6 +19,7 @@ class DefaultTextFormField extends StatefulWidget {
     this.prefixIconImageName,
     this.validator,
     this.isPassword = false,
+    this.maxLines,
   });
 
   @override
@@ -32,7 +34,7 @@ class _DefaultTextFormFieldState extends State<DefaultTextFormField> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
-        maxLines: widget.isPassword ? 1 : null,
+        maxLines: widget.isPassword ? 1 : widget.maxLines,
         controller: widget.controller,
         onChanged: widget.onChanged,
         style: Theme.of(context).textTheme.titleMedium,
