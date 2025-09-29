@@ -7,6 +7,7 @@ import 'package:chat_app/home_screen.dart';
 import 'package:chat_app/l10n/app_localizations.dart';
 import 'package:chat_app/core/languages/view_model/language_state.dart';
 import 'package:chat_app/core/languages/view_model/languages_view_model.dart';
+import 'package:chat_app/rooms/view/screens/room_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,8 +56,9 @@ class ChatApp extends StatelessWidget {
               HomeScreen.routeName: (ctx) => const HomeScreen(),
               LoginScreen.routeName: (ctx) => const LoginScreen(),
               RegisterScreen.routeName: (ctx) => const RegisterScreen(),
+              CreateRoomScreen.routeName: (ctx) => const CreateRoomScreen(),
             },
-            initialRoute: LoginScreen.routeName,
+            initialRoute: HomeScreen.routeName,
             themeMode: ThemeMode.light,
             theme: AppTheme.lightTheme,
             localizationsDelegates: AppLocalizations.localizationsDelegates,

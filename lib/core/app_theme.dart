@@ -4,7 +4,7 @@ class AppTheme {
   static const Color primary = Color(0xFF3598DB);
   static const Color backgroundLight = Color(0xFFFCFCFC);
   static const Color backgroundDark = Color(0xFF101127);
-  static const Color grey = Color(0xFF7B7B7B);
+  static const Color grey = Color(0xFF7F7F7F);
   static const Color black = Color(0xFF1C1C1C);
   static const Color red = Color(0xFFFF5659);
   static const Color white = Color(0xFFFFFFFF);
@@ -13,19 +13,19 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: backgroundLight,
     appBarTheme: AppBarTheme(
-      backgroundColor: backgroundLight,
-      foregroundColor: primary,
+      backgroundColor: Colors.transparent,
+      foregroundColor: white,
       centerTitle: true,
       titleTextStyle: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w500,
-        color: primary,
+        color: white,
       ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: primary,
       foregroundColor: white,
-      shape: CircleBorder(side: BorderSide(width: 5, color: white)),
+      shape: CircleBorder(),
     ),
     inputDecorationTheme: InputDecorationTheme(
       hintStyle: TextStyle(
@@ -34,19 +34,19 @@ class AppTheme {
         color: primary,
       ),
 
-      enabledBorder: OutlineInputBorder(
+      enabledBorder: UnderlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(color: primary),
       ),
-      focusedBorder: OutlineInputBorder(
+      focusedBorder: UnderlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(color: grey),
       ),
-      errorBorder: OutlineInputBorder(
+      errorBorder: UnderlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(color: grey),
       ),
-      focusedErrorBorder: OutlineInputBorder(
+      focusedErrorBorder: UnderlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(color: grey),
       ),
@@ -72,9 +72,9 @@ class AppTheme {
     ),
     textTheme: TextTheme(
       headlineSmall: TextStyle(
-        fontSize: 24,
+        fontSize: 16,
         fontWeight: FontWeight.bold,
-        color: white,
+        color: black,
       ),
       titleLarge: TextStyle(
         fontSize: 20,
@@ -88,8 +88,8 @@ class AppTheme {
       ),
       titleSmall: TextStyle(
         fontSize: 14,
-        fontWeight: FontWeight.w400,
-        color: white,
+        fontWeight: FontWeight.w500,
+        color: black,
       ),
     ),
   );

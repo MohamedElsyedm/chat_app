@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 class DefaultElevatedButton extends StatelessWidget {
   final String label;
   final VoidCallback onPressed;
+  final double? width;
+  final double? borderRadiusValue;
 
   const DefaultElevatedButton({
     super.key,
     required this.label,
     required this.onPressed,
+    this.width,
+    this.borderRadiusValue,
   });
 
   @override
@@ -16,7 +20,10 @@ class DefaultElevatedButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        fixedSize: Size(MediaQuery.sizeOf(context).width, 45),
+        fixedSize: Size(width ?? MediaQuery.sizeOf(context).width, 45),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadiusValue ?? 16),
+        ),
       ),
       child: Row(
         children: [
