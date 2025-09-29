@@ -1,70 +1,75 @@
+import 'package:chat_app/core/app_theme.dart';
+import 'package:chat_app/auth/presentation/screens/login_screen.dart';
+import 'package:chat_app/auth/presentation/screens/register_screen.dart';
+import 'package:chat_app/auth/view_model/auth_view_model.dart';
 import 'package:chat_app/firebase_options.dart';
+import 'package:chat_app/home_screen.dart';
+import 'package:chat_app/l10n/app_localizations.dart';
+import 'package:chat_app/core/languages/view_model/language_state.dart';
+import 'package:chat_app/core/languages/view_model/languages_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.immersiveSticky,
+    overlays: [],
+  );
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => LanguagesViewModel()..changeLanguage("en")),
+        BlocProvider(create: (_) => AuthViewModel()),
+      ],
+      child: ChatApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ChatApp extends StatelessWidget {
+  const ChatApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+    return BlocBuilder<LanguagesViewModel, LanguageState>(
+      builder: (context, state) {
+        if (state is LanguageLoading) {
+          return const Directionality(
+            textDirection: TextDirection.ltr,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (state is LanguageError) {
+          return Directionality(
+            textDirection: TextDirection.ltr,
+            child: Text(state.message),
+          );
+        } else if (state is LanguageSuccess) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            routes: {
+              HomeScreen.routeName: (ctx) => const HomeScreen(),
+              LoginScreen.routeName: (ctx) => const LoginScreen(),
+              RegisterScreen.routeName: (ctx) => const RegisterScreen(),
+            },
+            initialRoute: LoginScreen.routeName,
+            themeMode: ThemeMode.light,
+            theme: AppTheme.lightTheme,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: Locale(state.languageCode),
+          );
+        } else {
+          return const Directionality(
+            textDirection: TextDirection.ltr,
+            child: Text('Initial State'),
+          );
+        }
+      },
     );
   }
 }
