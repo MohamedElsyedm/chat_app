@@ -6,18 +6,18 @@ flutter_native_splash:
 
 
  
-  image: assets/images/whatsapp_icon.png
+  image: assets/images/chat_logo.png
 
 
-  branding: assets/images/branding_mo.png
-  image_dark: assets/images/whatsapp_icon.png
+  branding: assets/images/chat_branding.png
+  image_dark: assets/images/chat_logo.png
 
   #branding_mode: bottom
   
 
   branding_bottom_padding: 24
 
-  color_dark: "#000000"
+  color_dark: "#343434"
   # background_image_dark: "assets/images/whatsapp_icon.png"
   # image_dark: assets/images/whatsapp_icon.png
   #branding_dark: assets/dart_dark.png
@@ -26,8 +26,8 @@ flutter_native_splash:
   android_12:
     color: "#ffffff"
   #background_image: "assets/background.png"
-    image: assets/images/android12splash_w.png
-    branding: assets/images/branding_mo.png
+    image: assets/images/android12splash_c.png
+    branding: assets/images/chat_branding.png
     branding_bottom_padding: 24
-    color_dark: "#000000"
-    image_dark: assets/images/android12splash_w_dark.png
+    color_dark: "#343434"
+    image_dark: assets\images\android12splash_c_dark.png
