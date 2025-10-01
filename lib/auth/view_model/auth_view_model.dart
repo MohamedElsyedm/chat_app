@@ -35,33 +35,29 @@ class AuthViewModel extends Cubit<AuthState> {
       emit(RegisterError(exception.toString()));
     }
   }
-}
 
-/*
- DatabaseUtils.register(
-            name: nameController.text,
-            email: emailController.text,
-            password: passwordController.text,
-          )
-          .then((user) {
-            // no need to listen for this screen and this be on (click or .then)
-            Provider.of<UserProvider>(
-              context,
-              listen: false,
-            ).updateCurrentUser(user);
-            UiUtils.showSuccessMessage('Registered Successfully');
-            if (mounted) {
-              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-            }
-          })
-          .catchError((error) {
-            print(error);
-            print('=================== error ===================');
-            String? errorMessage;
-            if (error is FirebaseAuthException) {
-              //is => comparing type
-              errorMessage = error.message;
-            }
-            UiUtils.showErrorMessage(errorMessage);
-          });
- */
+  Future<void> logout() async {
+    emit(LogoutLoading());
+    try {
+      Future.delayed(Duration(seconds: 2));
+      DatabaseUtils.logout();
+      currentUser = null;
+      emit(LogoutSuccess());
+    } catch (error) {
+      emit(LogoutError(error.toString()));
+    }
+  }
+
+  Future<void> getCurrentUser() async {
+    try {
+      currentUser = await DatabaseUtils.getCurrentUser();
+      if (currentUser != null) {
+        emit(IsLoggedIn());
+      } else {
+        emit(NotLogged());
+      }
+    } catch (_) {
+      emit(NotLogged());
+    }
+  }
+}

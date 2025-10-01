@@ -4,6 +4,7 @@ import 'package:chat_app/auth/presentation/screens/login_screen.dart';
 import 'package:chat_app/auth/presentation/screens/register_screen.dart';
 import 'package:chat_app/auth/view_model/auth_view_model.dart';
 import 'package:chat_app/core/bloc_observer.dart';
+import 'package:chat_app/core/splash_screen.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/home_screen.dart';
 import 'package:chat_app/l10n/app_localizations.dart';
@@ -34,8 +35,22 @@ void main() async {
   );
 }
 
-class ChatApp extends StatelessWidget {
+class ChatApp extends StatefulWidget {
   const ChatApp({super.key});
+
+  @override
+  State<ChatApp> createState() => _ChatAppState();
+}
+
+class _ChatAppState extends State<ChatApp> {
+  late final AuthViewModel authViewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    authViewModel = BlocProvider.of<AuthViewModel>(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LanguagesViewModel, LanguageState>(
@@ -56,11 +71,11 @@ class ChatApp extends StatelessWidget {
             routes: {
               HomeScreen.routeName: (ctx) => const HomeScreen(),
               LoginScreen.routeName: (ctx) => const LoginScreen(),
+              SplashScreen.routName: (ctx) => const SplashScreen(),
               RegisterScreen.routeName: (ctx) => const RegisterScreen(),
               CreateRoomScreen.routeName: (ctx) => const CreateRoomScreen(),
               ChatScreen.routeName: (ctx) => const ChatScreen(),
             },
-            initialRoute: LoginScreen.routeName,
             themeMode: ThemeMode.light,
             theme: AppTheme.lightTheme,
             localizationsDelegates: AppLocalizations.localizationsDelegates,

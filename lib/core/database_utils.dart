@@ -88,24 +88,35 @@ class DatabaseUtils {
     return user;
   }
 
+  static Future<UserModel> _getUser(String id) async {
+    CollectionReference<UserModel> userCollection = getUserCollection();
+
+    DocumentSnapshot<UserModel> docSnapshot = await userCollection
+        .doc(id)
+        .get();
+    return docSnapshot.data()!;
+  }
+
   static Future<UserModel> login({
     required String email,
     required String password,
   }) async {
     UserCredential credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-
-    CollectionReference<UserModel> userCollection = getUserCollection();
-
-    DocumentSnapshot<UserModel> docSnapshot = await userCollection
-        .doc(credential.user!.uid)
-        .get();
-    return docSnapshot.data()!;
+    final user = await _getUser(credential.user!.uid);
+    return user;
   }
 
   static Future<void> logout() {
     return FirebaseAuth.instance.signOut();
     // _googleSignIn.signOut();
+  }
+
+  static Future<UserModel?> getCurrentUser() async {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser == null) return null;
+    final user = await _getUser(firebaseUser.uid);
+    return user;
   }
 
   //
