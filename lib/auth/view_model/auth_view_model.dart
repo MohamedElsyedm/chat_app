@@ -1,7 +1,6 @@
 import 'package:chat_app/auth/view_model/auth_state.dart';
 import 'package:chat_app/core/database_utils.dart';
-import 'package:chat_app/home_screen.dart';
-import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/auth/data/models/user_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthViewModel extends Cubit<AuthState> {
@@ -12,10 +11,7 @@ class AuthViewModel extends Cubit<AuthState> {
   Future<void> login({required String email, required String password}) async {
     emit(LoginLoading());
     try {
-      final currentUser = await DatabaseUtils.login(
-        email: email,
-        password: password,
-      );
+      currentUser = await DatabaseUtils.login(email: email, password: password);
       emit(LoginSuccess());
     } catch (exception) {
       emit(LoginError(exception.toString()));
@@ -29,7 +25,7 @@ class AuthViewModel extends Cubit<AuthState> {
   }) async {
     emit(RegisterLoading());
     try {
-      final currentUser = await DatabaseUtils.register(
+      currentUser = await DatabaseUtils.register(
         name: name,
         email: email,
         password: password,

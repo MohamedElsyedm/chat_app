@@ -1,3 +1,4 @@
+import 'package:chat_app/core/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class LoadingIndicator extends StatelessWidget {
@@ -5,8 +6,6 @@ class LoadingIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: CircularProgressIndicator(color: Theme.of(context).primaryColor),
-    );
+    return Center(child: CircularProgressIndicator(color: AppTheme.primary));
   }
 }

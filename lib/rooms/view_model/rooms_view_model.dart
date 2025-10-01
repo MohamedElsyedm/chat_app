@@ -30,4 +30,16 @@ class RoomsViewModel extends Cubit<RoomsState> {
       emit(CreateRoomsError(exception.toString()));
     }
   }
+
+  //delete room
+  Future<void> deleteRoom(RoomModel room) async {
+    emit(DeleteRoomsLoading());
+    try {
+      await DatabaseUtils.deleteRoom(room);
+      getRooms();
+      emit(DeleteRoomsSuccess());
+    } catch (exception) {
+      emit(DeleteRoomsError(exception.toString()));
+    }
+  }
 }

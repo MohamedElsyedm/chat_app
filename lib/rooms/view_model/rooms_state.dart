@@ -24,3 +24,12 @@ class CreateRoomsError extends RoomsState {
   final String errorMessage;
   CreateRoomsError(this.errorMessage);
 }
+
+class DeleteRoomsLoading extends RoomsState {}
+
+class DeleteRoomsSuccess extends RoomsState {}
+
+class DeleteRoomsError extends RoomsState {
+  final String errorMessage;
+  DeleteRoomsError(this.errorMessage);
+}

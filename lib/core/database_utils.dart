@@ -1,6 +1,7 @@
+import 'package:chat_app/chat/data/model/message.dart';
 import 'package:chat_app/rooms/data/models/room_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:chat_app/models/user_model.dart';
+import 'package:chat_app/auth/data/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class DatabaseUtils {
@@ -20,6 +21,18 @@ class DatabaseUtils {
         fromFirestore: (docSnapshot, _) =>
             RoomModel.fromJson(docSnapshot.data()!),
         toFirestore: (room, _) => room.toJson(),
+      );
+
+  //nested collection
+  static CollectionReference<MessageModel> getMessageCollection(
+    String roomId,
+  ) => getRoomCollection()
+      .doc(roomId)
+      .collection('messages')
+      .withConverter<MessageModel>(
+        fromFirestore: (docSnapshot, _) =>
+            MessageModel.fromJson(docSnapshot.data()!),
+        toFirestore: (message, _) => message.toJson(),
       );
 
   //firebase auth
@@ -68,7 +81,6 @@ class DatabaseUtils {
       id: credential.user!.uid,
       name: name,
       email: email,
-      favoriteEventIds: [],
     );
 
     CollectionReference<UserModel> userCollection = getUserCollection();
@@ -96,26 +108,6 @@ class DatabaseUtils {
     // _googleSignIn.signOut();
   }
 
-  static Future<void> addEventToFavorite(String eventId) async {
-    CollectionReference<UserModel> userCollection = getUserCollection();
-    DocumentReference<UserModel> userDoc = userCollection.doc(
-      FirebaseAuth.instance.currentUser!.uid,
-    );
-    return userDoc.update({
-      'favoriteEventIds': FieldValue.arrayUnion([eventId]),
-    });
-  }
-
-  static Future<void> removeEventFromFavorite(String eventId) async {
-    CollectionReference<UserModel> userCollection = getUserCollection();
-    DocumentReference<UserModel> userDoc = userCollection.doc(
-      FirebaseAuth.instance.currentUser!.uid,
-    );
-    return userDoc.update({
-      'favoriteEventIds': FieldValue.arrayRemove([eventId]),
-    });
-  }
-
   //
 
   static Future<List<RoomModel>> getRoom() async {
@@ -129,5 +121,32 @@ class DatabaseUtils {
     final doc = roomsCollection.doc();
     room.id = doc.id;
     return doc.set(room);
+  }
+
+  static Future<void> deleteRoom(RoomModel room) async {
+    final roomsCollection = getRoomCollection();
+    final doc = roomsCollection.doc(room.id);
+    return doc.delete();
+  }
+
+  //nested collection
+  // messages
+  static Future<void> insertMessageToRooms(MessageModel message) async {
+    final messagesCollection = getMessageCollection(message.roomId);
+    final doc = messagesCollection.doc();
+    doc.set(message);
+  }
+
+  static Stream<List<MessageModel>> getRoomMessages(String roomId) {
+    final messagesCollection = getMessageCollection(roomId);
+    //return stream of data
+    return messagesCollection
+        .orderBy('dateTime', descending: true)
+        .snapshots()
+        .map(
+          (querySnapshot) => querySnapshot.docs
+              .map((docSnapshot) => docSnapshot.data())
+              .toList(),
+        );
   }
 }

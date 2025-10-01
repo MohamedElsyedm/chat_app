@@ -1,3 +1,4 @@
+import 'package:chat_app/chat/view/screens/chat_screen.dart';
 import 'package:chat_app/core/app_theme.dart';
 import 'package:chat_app/auth/presentation/screens/login_screen.dart';
 import 'package:chat_app/auth/presentation/screens/register_screen.dart';
@@ -57,8 +58,9 @@ class ChatApp extends StatelessWidget {
               LoginScreen.routeName: (ctx) => const LoginScreen(),
               RegisterScreen.routeName: (ctx) => const RegisterScreen(),
               CreateRoomScreen.routeName: (ctx) => const CreateRoomScreen(),
+              ChatScreen.routeName: (ctx) => const ChatScreen(),
             },
-            initialRoute: HomeScreen.routeName,
+            initialRoute: LoginScreen.routeName,
             themeMode: ThemeMode.light,
             theme: AppTheme.lightTheme,
             localizationsDelegates: AppLocalizations.localizationsDelegates,

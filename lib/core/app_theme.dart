@@ -91,6 +91,11 @@ class AppTheme {
         fontWeight: FontWeight.w500,
         color: black,
       ),
+      bodySmall: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.w400,
+        color: grey,
+      ),
     ),
   );
 }

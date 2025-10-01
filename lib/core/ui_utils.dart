@@ -3,24 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class UiUtils {
-  static void showLoading(BuildContext context) => showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (_) {
-      return PopScope(
-        canPop: false,
-        child: AlertDialog(
-          content: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [CircularProgressIndicator()],
+  static void showLoading(BuildContext context, [List<Widget>? children]) =>
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return PopScope(
+            canPop: false,
+            child: AlertDialog(
+              content: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: children ?? [CircularProgressIndicator()],
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       );
-    },
-  );
 
   static void showSuccessMessage(String message) => Fluttertoast.showToast(
     msg: message,
